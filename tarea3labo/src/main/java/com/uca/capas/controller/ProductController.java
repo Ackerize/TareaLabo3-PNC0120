@@ -19,21 +19,31 @@ public class ProductController {
 	public ModelAndView compraProducto(){
 		ModelAndView mav = new ModelAndView();
 		
-		productos.add(new Product(0, "GTA5", 60));
-		productos.add(new Product(1, "MINECRAFT", 20));
-		productos.add(new Product(2, "WOW", 10));
-		productos.add(new Product(3, "COD", 8));
-		productos.add(new Product(4, "ANIMAL CROSSING", 20));
+		//Telefonos
+		productos.add(new Product(0, "Samsung Galaxy S20 Ulta", 30));
+		productos.add(new Product(1, "Apple iPhone 11", 50));
+		productos.add(new Product(2, "Xiaomi Mi Mix 2S", 7));
+		productos.add(new Product(3, "Huawei P40 Pro", 5));
+		productos.add(new Product(4, "Google Pixel 4 XL", 42));
 		
-		mav.setViewName("select");
+		mav.setViewName("productos");
 		mav.addObject("product", new Product());
 		mav.addObject("producto", productos);
 		return mav;
 	}
 	
-	@PostMapping("validar")
+	@PostMapping("/validar")
 	@ResponseBody
-	public String validar(Product product) {
-		return productos.get(product.getId()).getNombre();
+	public ModelAndView validar(Product product) {
+		ModelAndView mav = new ModelAndView();
+		if(productos.get(product.getId()).getCantidad() < product.getCantidad()){
+			mav.setViewName("error");
+		}else {
+			mav.setViewName("compra");
+		}
+		product.setNombre(productos.get(product.getId()).getNombre());
+		mav.addObject("product", product);
+		System.out.print(product.getNombre());
+		return mav;
 	}
 }
